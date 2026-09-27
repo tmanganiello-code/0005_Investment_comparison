@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparatore Avanzato di Investimenti</title>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-color: #f4f7f9;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --primary: #3b82f6;
+            --color-a: #2563eb; /* Blue for A */
+            --color-b: #16a34a; /* Green for B */
+            --danger: #ef4444;
+            --success: #10b981;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1, h2, h3 {
+            color: var(--text-main);
+            margin-bottom: 15px;
+        }
+
+        .text-center { text-align: center; }
+        .mb-4 { margin-bottom: 1.5rem; }
+        .mt-4 { margin-top: 1.5rem; }
+
+        /* Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        @media (min-width: 768px) {
+            .grid-2 { grid-template-columns: 1fr 1fr; }
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        @media (min-width: 1024px) {
+            .grid-4 { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .title-a { border-bottom-color: var(--color-a); color: var(--color-a); }
+        .title-b { border-bottom-color: var(--color-b); color: var(--color-b); }
+
+        /* Form Inputs */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: var(--text-main);
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .input-group input, .input-group select {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .input-addon {
+            background: #f3f4f6;
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+            border-left: none;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        
+        .input-group input { border-radius: 6px 0 0 6px; }
+
+        .hidden { display: none !important; }
+
+        /* Dashboard KPIs */
+        .kpi-box {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .kpi-title {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 5px;
+        }
+
+        .kpi-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .val-a { color: var(--color-a); }
+        .val-b { color: var(--color-b); }
+        .val-diff { color: var(--text-main); }
+
+        /* Charts */
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: #f9fafb;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        tr:hover { background: #f9fafb; }
+
+        .text-right { text-align: right; }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover { background: #2563eb; }
+
+        .btn-secondary {
+            background: #e5e7eb;
+            color: var(--text-main);
+        }
+
+        .btn-secondary:hover { background: #d1d5db; }
+
+        /* Collapsible */
+        .collapsible-header {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-weight: 600;
+        }
+        
+        .collapsible-content {
+            display: none;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+        }
+        
+        .collapsible.active .collapsible-content {
+            display: block;
+        }
+
+        .tooltip {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dashed var(--text-muted);
+        }
+
+        /* Documentation Section */
+        .doc-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            color: #4b5563;
+        }
+        .doc-section code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="text-center mb-4">Comparatore Effettivo di Investimenti</h1>
+    
+    <div class="btn-group">
+        <button class="btn btn-primary" onclick="calculateAll()">Calcola / Aggiorna</button>
+        <button class="btn btn-secondary" onclick="resetForm()">Ripristina</button>
+        <button class="btn btn-secondary" onclick="copyToClipboard()">Copia Confronto</button>
+    </div>
+
+    <!-- SEZIONE A: INPUT -->
+    <div class="grid-2">
+        <!-- Investimento A -->
+        <div class="card" id="form-a">
+            <h2 class="card-title title-a">Investimento A</h2>
+            
+            <div class="form-group">
+                <label>Nome investimento</label>
+                <div class="input-group"><input type="text" id="name-a" value="Conto Deposito"></div>
+            </div>
+            
+            <div class="form-group">
+                <label>Capitale iniziale</label>
+                <div class="input-group"><input type="number" id="cap-a" value="10000" min="0"><div class="input-addon">€</div></div>
+            </div>
+            
+            <div class="form-group">
+                <label>Durata dell'investimento</label>
+                <div class="input-group"><input type="number" id="years-a" value="10" min="1"><div class="input-addon">Anni</div></div>
+            </div>
+            
+            <div class="form-group">
+                <label>Rendimento lordo annuo</label>
+                <div class="input-group"><input type="number" id="yield-a" value="4.0" step="0.1"><div class="input-addon">%</div></div>
+            </div>
+            
+            <div class="form-group">
+                <label>Tassazione sul profitto</label>
+                <div class="input-group">
+                    <select id="tax-select-a" onchange="toggleCustomTax('a')">
+                        <option value="26">26% (Azioni, ETF, Conti, ecc.)</option>
+                        <option value="12.5">12,5% (Titoli di Stato, BTP)</option>
+                        <option value="custom">Personalizzata</option>
+                    </select>
+                </div>
+                <div class="input-group hidden mt-4" id="tax-custom-container-a">
+                    <input type="number" id="tax-custom-a" value="26" step="0.1" min="0"><div class="input-addon">%</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label><span class="tooltip" title="Applicata annualmente sul controvalore">Imposta di bollo annua</span></label>
+                <div class="input-group"><input type="number" id="stamp-a" value="0.2" step="0.01" min="0"><div class="input-addon">%</div></div>
+            </div>
+
+            <div class="form-group">
+                <label>Commissione bancaria iniziale (una tantum)</label>
+                <div class="grid-2" style="gap: 10px;">
+                    <div class="input-group"><input type="number" id="fee-pct-a" value="0" step="0.1" min="0"><div class="input-addon">%</div></div>
+                    <div class="input-group"><input type="number" id="fee-fix-a" value="0" step="1" min="0"><div class="input-addon">€</div></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Costi di gestione annui (TER, tenuta conto)</label>
+                <div class="grid-2" style="gap: 10px;">
+                    <div class="input-group"><input type="number" id="cost-pct-a" value="0" step="0.1" min="0"><div class="input-addon">%</div></div>
+                    <div class="input-group"><input type="number" id="cost-fix-a" value="34.20" step="1" min="0"><div class="input-addon">€</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Investimento B -->
+        <div class="card" id="form-b">
+            <h2 class="card-title title-b">Investimento B</h2>
+            
+            <div class="form-group">
+                <label>Nome investimento</label>
+                <div class="input-group"><input type="text" id="name-b" value="BTP / Titolo di Stato"></div>
+            </div>
+            
+            <div class="form-group">
+                <label>Capitale iniziale</label>
+                <div class="input-group"><input type="number" id="cap-b" value="10000" min="0"><div class="input-addon">€</div></div>
+            </div>
+            
+            <div class="form-group">
+                <label>Durata dell'investimento</label>
+                <div class="input-group"><input type="number" id="years-b" value="10" min="1"><div class="input-addon">Anni</div></div>
+            </div>
+            
+            <div class="form-group">
+                <label>Rendimento lordo annuo</label>
+                <div class="input-group"><input type="number" id="yield-b" value="3.5" step="0.1"><div class="input-addon">%</div></div>
+            </div>
+            
+            <div class="form-group">
+                <label>Tassazione sul profitto</label>
+                <div class="input-group">
+                    <select id="tax-select-b" onchange="toggleCustomTax('b')">
+                        <option value="26">26% (Azioni, ETF, Conti, ecc.)</option>
+                        <option value="12.5" selected>12,5% (Titoli di Stato, BTP)</option>
+                        <option value="custom">Personalizzata</option>
+                    </select>
+                </div>
+                <div class="input-group hidden mt-4" id="tax-custom-container-b">
+                    <input type="number" id="tax-custom-b" value="12.5" step="0.1" min="0"><div class="input-addon">%</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label><span class="tooltip" title="Applicata annualmente sul controvalore">Imposta di bollo annua</span></label>
+                <div class="input-group"><input type="number" id="stamp-b" value="0.2" step="0.01" min="0"><div class="input-addon">%</div></div>
+            </div>
+
+            <div class="form-group">
+                <label>Commissione bancaria iniziale (una tantum)</label>
+                <div class="grid-2" style="gap: 10px;">
+                    <div class="input-group"><input type="number" id="fee-pct-b" value="0.5" step="0.1" min="0"><div class="input-addon">%</div></div>
+                    <div class="input-group"><input type="number" id="fee-fix-b" value="5" step="1" min="0"><div class="input-addon">€</div></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Costi di gestione annui (TER, tenuta conto)</label>
+                <div class="grid-2" style="gap: 10px;">
+                    <div class="input-group"><input type="number" id="cost-pct-b" value="0" step="0.1" min="0"><div class="input-addon">%</div></div>
+                    <div class="input-group"><input type="number" id="cost-fix-b" value="0" step="1" min="0"><div class="input-addon">€</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- INFLAZIONE & SETTINGS -->
+    <div class="grid-2">
+        <div class="card">
+            <h3 class="card-title">Inflazione</h3>
+            <p style="font-size: 0.9rem; margin-bottom: 10px; color: var(--text-muted);">Calcola il valore reale del capitale abbattendo il potere d'acquisto nel tempo.</p>
+            <div class="form-group">
+                <label>Inflazione media annua prevista</label>
+                <div class="input-group"><input type="number" id="inflation" value="2.0" step="0.1"><div class="input-addon">%</div></div>
+            </div>
+        </div>
+        
+        <div class="card collapsible" id="adv-settings">
+            <div class="collapsible-header" onclick="toggleCollapsible('adv-settings')">
+                Impostazioni Avanzate (Predisposizione)
+                <span>▼</span>
+            </div>
+            <div class="collapsible-content">
+                <p style="font-size: 0.9rem; color: var(--text-muted);">La struttura supporta calcoli iterativi. Moduli futuri potranno attivare:</p>
+                <ul style="margin-left: 20px; font-size: 0.9rem; margin-top: 10px; color: var(--text-muted);">
+                    <li>Capitalizzazione mensile o trimestrale</li>
+                    <li>Versamenti ricorrenti (PAC)</li>
+                    <li>Prelievi programmati</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD KPI -->
+    <div class="card">
+        <h2 class="card-title">Confronto degli Investimenti</h2>
+        <div class="grid-4">
+            <div class="kpi-box">
+                <div class="kpi-title">Capitale Finale Netto A</div>
+                <div class="kpi-value val-a" id="kpi-cap-a">€ 0,00</div>
+            </div>
+            <div class="kpi-box">
+                <div class="kpi-title">Capitale Finale Netto B</div>
+                <div class="kpi-value val-b" id="kpi-cap-b">€ 0,00</div>
+            </div>
+            <div class="kpi-box">
+                <div class="kpi-title">Guadagno Netto A</div>
+                <div class="kpi-value val-a" id="kpi-gain-a">€ 0,00</div>
+            </div>
+            <div class="kpi-box">
+                <div class="kpi-title">Guadagno Netto B</div>
+                <div class="kpi-value val-b" id="kpi-gain-b">€ 0,00</div>
+            </div>
+            <div class="kpi-box">
+                <div class="kpi-title">Rendimento Netto Annuo A</div>
+                <div class="kpi-value val-a" id="kpi-ret-a">0,00%</div>
+            </div>
+            <div class="kpi-box">
+                <div class="kpi-title">Rendimento Netto Annuo B</div>
+                <div class="kpi-value val-b" id="kpi-ret-b">0,00%</div>
+            </div>
+            <div class="kpi-box">
+                <div class="kpi-title">Rend. Reale Annuo A (Netto Inflazione)</div>
+                <div class="kpi-value val-a" id="kpi-real-a">0,00%</div>
+            </div>
+            <div class="kpi-box">
+                <div class="kpi-title">Rend. Reale Annuo B (Netto Inflazione)</div>
+                <div class="kpi-value val-b" id="kpi-real-b">0,00%</div>
+            </div>
+        </div>
+        
+        <div class="mt-4 kpi-box" style="background: #eff6ff; border-color: #bfdbfe;">
+            <h3 style="margin-bottom: 5px; color: #1e3a8a;">Differenza tra i due investimenti (A vs B)</h3>
+            <div class="grid-2">
+                <div>
+                    <div class="kpi-title">Differenza Assoluta (Capitale Netto)</div>
+                    <div class="kpi-value val-diff" id="kpi-diff-abs">€ 0,00</div>
+                </div>
+                <div>
+                    <div class="kpi-title">Differenza Relativa (Rispetto a B)</div>
+                    <div class="kpi-value val-diff" id="kpi-diff-rel">0,00%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GRAFICI -->
+    <div class="grid-2">
+        <div class="card">
+            <h3 class="card-title">Andamento del Capitale (Nominale e Reale)</h3>
+            <div class="chart-container">
+                <canvas id="chart-capital"></canvas>
+            </div>
+        </div>
+        <div class="card">
+            <h3 class="card-title">Rendimento Cumulato %</h3>
+            <div class="chart-container">
+                <canvas id="chart-returns"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- TABELLA BREAKDOWN -->
+    <div class="card">
+        <h3 class="card-title">Dettaglio dei Costi e Breakdown Finale</h3>
+        <div class="table-responsive">
+            <table id="table-breakdown">
+                <thead>
+                    <tr>
+                        <th>Voce</th>
+                        <th class="text-right val-a">Investimento A</th>
+                        <th class="text-right val-b">Investimento B</th>
+                        <th class="text-right">Differenza (A - B)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Injected via JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- SIMULAZIONE ANNUALE -->
+    <div class="card collapsible" id="sim-table-container">
+        <div class="collapsible-header" onclick="toggleCollapsible('sim-table-container')">
+            Simulazione Annuale Dettagliata (Clicca per espandere)
+            <span>▼</span>
+        </div>
+        <div class="collapsible-content">
+            <div class="table-responsive">
+                <table id="table-simulation">
+                    <thead>
+                        <tr>
+                            <th>Anno</th>
+                            <th class="text-right val-a">Cap. Netto A</th>
+                            <th class="text-right val-b">Cap. Netto B</th>
+                            <th class="text-right">Differenza</th>
+                            <th class="text-right val-a">Valore Reale A</th>
+                            <th class="text-right val-b">Valore Reale B</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Injected via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- DOCUMENTAZIONE LOGICA -->
+    <div class="card doc-section">
+        <h3 class="card-title">Come vengono effettuati i calcoli</h3>
+        <p>Questo calcolatore non si limita a sottrarre le percentuali dal rendimento lordo finale, ma utilizza un motore iterativo annuale per simulare la realtà di un investimento:</p>
+        <ul style="margin-left: 20px; margin-top: 10px; margin-bottom: 15px;">
+            <li><strong>Capitale di partenza:</strong> Il capitale iniziale viene decurtato delle <em>commissioni iniziali</em> (fisse e percentuali) per ottenere il capitale effettivamente investito.</li>
+            <li><strong>Rendimento composto e Costi:</strong> Ogni anno, il saldo cresce del <em>rendimento lordo</em>. Da questo nuovo saldo vengono sottratti i <em>costi annui</em> (percentuali e fissi) e l'<em>imposta di bollo</em>. Il risultato costituisce la base per la crescita dell'anno successivo.</li>
+            <li><strong>Tassazione:</strong> Calcolata solo al momento del disinvestimento (fine periodo) sul <em>profitto imponibile</em>, ovvero la differenza tra il saldo lordo finale e il capitale iniziale versato. Se il profitto è negativo o nullo, le tasse sono 0.</li>
+            <li><strong>Effetto dell'Inflazione (Valore Reale):</strong> Mostra quanto varrà il capitale finale in termini di potere d'acquisto odierno. Formula: <code>Valore Nominale / (1 + Inflazione)^Anni</code>.</li>
+        </ul>
+        <p style="font-size: 0.85rem; color: #6b7280; font-style: italic;">
+            Nota: Le aliquote fiscali e le modalità di applicazione dei costi sono parametri di simulazione. La normativa fiscale reale (es. compensazione minusvalenze, tempistiche di prelievo del bollo, capitalizzazione separata delle cedole) può variare in base allo specifico strumento. Verificare sempre la documentazione informativa (KID/Prospetto).
+        </p>
+    </div>
+
+</div>
+
+<script>
+    // --- UTILITIES ---
+    const formatCurrency = (val) => new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(val);
+    const formatPercent = (val) => new Intl.NumberFormat('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(val) + '%';
+    const parseNum = (id) => parseFloat(document.getElementById(id).value) || 0;
+
+    let chartCapitalInstance = null;
+    let chartReturnsInstance = null;
+
+    // --- UI INTERACTIONS ---
+    function toggleCustomTax(inv) {
+        const select = document.getElementById(`tax-select-${inv}`);
+        const customContainer = document.getElementById(`tax-custom-container-${inv}`);
+        if (select.value === 'custom') {
+            customContainer.classList.remove('hidden');
+        } else {
+            customContainer.classList.add('hidden');
+        }
+        calculateAll();
+    }
+
+    function toggleCollapsible(id) {
+        document.getElementById(id).classList.toggle('active');
+    }
+
+    // Aggiungi listener a tutti gli input
+    document.querySelectorAll('input, select').forEach(el => {
+        el.addEventListener('input', calculateAll);
+    });
+
+    // --- LOGICA DI CALCOLO FINANZIARIO ---
+    function getInvestmentData(inv) {
+        const taxVal = document.getElementById(`tax-select-${inv}`).value;
+        const taxRate = taxVal === 'custom' ? parseNum(`tax-custom-${inv}`) : parseFloat(taxVal);
+        
+        return {
+            name: document.getElementById(`name-${inv}`).value || `Investimento ${inv.toUpperCase()}`,
+            initialCapital: Math.max(0, parseNum(`cap-${inv}`)),
+            years: Math.max(1, parseNum(`years-${inv}`)),
+            yieldGross: parseNum(`yield-${inv}`),
+            taxRate: taxRate,
+            stampDuty: parseNum(`stamp-${inv}`),
+            feePct: parseNum(`fee-pct-${inv}`),
+            feeFix: parseNum(`fee-fix-${inv}`),
+            costPct: parseNum(`cost-pct-${inv}`),
+            costFix: parseNum(`cost-fix-${inv}`)
+        };
+    }
+
+    function simulateInvestment(data, inflationRate) {
+        let maxYears = data.years;
+        let c0 = data.initialCapital;
+        
+        // 1. Commissioni di ingresso
+        let entryFees = (c0 * (data.feePct / 100)) + data.feeFix;
+        let investedCapital = c0 - entryFees;
+        
+        let yearlySeries = [];
+        let currentBalance = investedCapital;
+        let totalTaxes = 0;
+        let totalStampDuty = 0;
+        let totalAnnualCosts = 0;
+        
+        // Anno 0
+        yearlySeries.push({
+            year: 0,
+            nominalBalanceBeforeTax: currentBalance,
+            netBalanceIfLiquidated: c0 - entryFees, // se liquido subito, ho perso le fee
+            realBalance: c0 - entryFees
+        });
+
+        // Loop iterativo annuale
+        for (let i = 1; i <= maxYears; i++) {
+            // Rendimento
+            let grossInterest = currentBalance * (data.yieldGross / 100);
+            
+            // Costi e Bollo calcolati sul controvalore (prima dell'applicazione per evitare circolarità)
+            let annualCost = (currentBalance * (data.costPct / 100)) + data.costFix;
+            let currentStamp = currentBalance * (data.stampDuty / 100); // Semplificazione: calcolato sul capitale ad inizio anno
+            
+            totalAnnualCosts += annualCost;
+            totalStampDuty += currentStamp;
+            
+            // Nuovo Saldo Lordo
+            currentBalance = currentBalance + grossInterest - annualCost - currentStamp;
+            
+            // Simulazione: Quanto avrei netto se liquidassi alla fine di questo anno?
+            let profitForTax = currentBalance - c0; // Il profitto si calcola dal capitale versato originariamente
+            let currentTax = profitForTax > 0 ? profitForTax * (data.taxRate / 100) : 0;
+            let netLiquidated = currentBalance - currentTax;
+            
+            let realLiquidated = netLiquidated / Math.pow(1 + (inflationRate / 100), i);
+            
+            yearlySeries.push({
+                year: i,
+                nominalBalanceBeforeTax: currentBalance,
+                netBalanceIfLiquidated: netLiquidated,
+                realBalance: realLiquidated,
+                accumulatedTax: currentTax
+            });
+        }
+        
+        let finalData = yearlySeries[maxYears];
+        let totalProfitNet = finalData.netBalanceIfLiquidated - c0;
+        let totalCosts = entryFees + totalAnnualCosts;
+        
+        // Rendimenti Annualizzati (CAGR)
+        let cagrNet = maxYears > 0 ? (Math.pow(finalData.netBalanceIfLiquidated / c0, 1 / maxYears) - 1) * 100 : 0;
+        let cagrReal = maxYears > 0 ? (Math.pow(finalData.realBalance / c0, 1 / maxYears) - 1) * 100 : 0;
+        
+        return {
+            ...data,
+            entryFees,
+            totalAnnualCosts,
+            totalStampDuty,
+            totalCosts,
+            finalGrossBalance: finalData.nominalBalanceBeforeTax,
+            finalTaxes: finalData.accumulatedTax,
+            finalNetBalance: finalData.netBalanceIfLiquidated,
+            finalRealBalance: finalData.realBalance,
+            totalProfitNet,
+            cagrNet,
+            cagrReal,
+            yearlySeries
+        };
+    }
+
+    function calculateAll() {
+        const inflation = parseNum('inflation');
+        
+        const dataA = getInvestmentData('a');
+        const dataB = getInvestmentData('b');
+        
+        // Eseguiamo la simulazione sull'orizzonte temporale maggiore per i grafici
+        const maxYearsToSimulate = Math.max(dataA.years, dataB.years);
+        
+        // Sovrascriviamo temporaneamente gli anni per avere serie lunghe uguali nel grafico, 
+        // ma consideriamo il risultato finale all'anno scelto dall'utente.
+        let simDataA = { ...dataA, years: maxYearsToSimulate };
+        let simDataB = { ...dataB, years: maxYearsToSimulate };
+        
+        const resA = simulateInvestment(simDataA, inflation);
+        const resB = simulateInvestment(simDataB, inflation);
+        
+        // Estraiamo i risultati reali agli anni indicati dall'utente per le dashboard e le tabelle
+        const finalA = resA.yearlySeries[dataA.years];
+        const finalB = resB.yearlySeries[dataB.years];
+        
+        // Ricostruiamo l'oggetto risultati A e B fermandoci agli anni corretti per la visualizzazione tabellare
+        const correctResA = simulateInvestment(dataA, inflation);
+        const correctResB = simulateInvestment(dataB, inflation);
+
+        updateDashboard(correctResA, correctResB);
+        updateCharts(resA, resB, maxYearsToSimulate); // Grafici su asse comune
+        updateBreakdownTable(correctResA, correctResB, inflation);
+        updateSimulationTable(correctResA, correctResB, Math.max(dataA.years, dataB.years));
+    }
+
+    // --- DOM UPDATES ---
+    function updateDashboard(resA, resB) {
+        document.getElementById('kpi-cap-a').textContent = formatCurrency(resA.finalNetBalance);
+        document.getElementById('kpi-cap-b').textContent = formatCurrency(resB.finalNetBalance);
+        
+        document.getElementById('kpi-gain-a').textContent = formatCurrency(resA.totalProfitNet);
+        document.getElementById('kpi-gain-b').textContent = formatCurrency(resB.totalProfitNet);
+        
+        document.getElementById('kpi-ret-a').textContent = formatPercent(resA.cagrNet);
+        document.getElementById('kpi-ret-b').textContent = formatPercent(resB.cagrNet);
+        
+        document.getElementById('kpi-real-a').textContent = formatPercent(resA.cagrReal);
+        document.getElementById('kpi-real-b').textContent = formatPercent(resB.cagrReal);
+        
+        const diffAbs = resA.finalNetBalance - resB.finalNetBalance;
+        let diffRel = 0;
+        if (resB.finalNetBalance !== 0) {
+            diffRel = (diffAbs / resB.finalNetBalance) * 100;
+        }
+        
+        const diffAbsEl = document.getElementById('kpi-diff-abs');
+        const diffRelEl = document.getElementById('kpi-diff-rel');
+        
+        diffAbsEl.textContent = (diffAbs > 0 ? '+' : '') + formatCurrency(diffAbs);
+        diffRelEl.textContent = (diffRel > 0 ? '+' : '') + formatPercent(diffRel);
+        
+        // Colora la differenza
+        diffAbsEl.style.color = diffAbs > 0 ? 'var(--color-a)' : (diffAbs < 0 ? 'var(--color-b)' : 'var(--text-main)');
+        diffRelEl.style.color = diffAbsEl.style.color;
+    }
+
+    function updateBreakdownTable(resA, resB, inflation) {
+        const tbody = document.querySelector('#table-breakdown tbody');
+        const diff = (valA, valB) => formatCurrency(valA - valB);
+        
+        let html = `
+            <tr>
+                <td>Capitale Iniziale</td>
+                <td class="text-right">${formatCurrency(resA.initialCapital)}</td>
+                <td class="text-right">${formatCurrency(resB.initialCapital)}</td>
+                <td class="text-right">${diff(resA.initialCapital, resB.initialCapital)}</td>
+            </tr>
+            <tr>
+                <td>Rendimento Lordo Annuo</td>
+                <td class="text-right">${formatPercent(resA.yieldGross)}</td>
+                <td class="text-right">${formatPercent(resB.yieldGross)}</td>
+                <td class="text-right">-</td>
+            </tr>
+            <tr>
+                <td>Commissioni Iniziali Totali</td>
+                <td class="text-right" style="color:var(--danger)">-${formatCurrency(resA.entryFees)}</td>
+                <td class="text-right" style="color:var(--danger)">-${formatCurrency(resB.entryFees)}</td>
+                <td class="text-right">${diff(resB.entryFees, resA.entryFees)}</td>
+            </tr>
+            <tr>
+                <td>Costi Annui Cumulati (fissi + variabili)</td>
+                <td class="text-right" style="color:var(--danger)">-${formatCurrency(resA.totalAnnualCosts)}</td>
+                <td class="text-right" style="color:var(--danger)">-${formatCurrency(resB.totalAnnualCosts)}</td>
+                <td class="text-right">${diff(resB.totalAnnualCosts, resA.totalAnnualCosts)}</td>
+            </tr>
+            <tr>
+                <td>Imposta di Bollo Cumulata</td>
+                <td class="text-right" style="color:var(--danger)">-${formatCurrency(resA.totalStampDuty)}</td>
+                <td class="text-right" style="color:var(--danger)">-${formatCurrency(resB.totalStampDuty)}</td>
+                <td class="text-right">${diff(resB.totalStampDuty, resA.totalStampDuty)}</td>
+            </tr>
+            <tr>
+                <td>Profitto Lordo Maturato</td>
+                <td class="text-right">${formatCurrency(resA.finalGrossBalance - resA.initialCapital)}</td>
+                <td class="text-right">${formatCurrency(resB.finalGrossBalance - resB.initialCapital)}</td>
+                <td class="text-right">${diff(resA.finalGrossBalance - resA.initialCapital, resB.finalGrossBalance - resB.initialCapital)}</td>
+            </tr>
+            <tr>
+                <td>Tasse sul Profitto (Aliquota: ${resA.taxRate}% / ${resB.taxRate}%)</td>
+                <td class="text-right" style="color:var(--danger)">-${formatCurrency(resA.finalTaxes)}</td>
+                <td class="text-right" style="color:var(--danger)">-${formatCurrency(resB.finalTaxes)}</td>
+                <td class="text-right">${diff(resB.finalTaxes, resA.finalTaxes)}</td>
+            </tr>
+            <tr style="font-weight: bold; background: #f9fafb;">
+                <td>Capitale Finale Netto</td>
+                <td class="text-right val-a">${formatCurrency(resA.finalNetBalance)}</td>
+                <td class="text-right val-b">${formatCurrency(resB.finalNetBalance)}</td>
+                <td class="text-right">${(resA.finalNetBalance - resB.finalNetBalance) > 0 ? '+' : ''}${diff(resA.finalNetBalance, resB.finalNetBalance)}</td>
+            </tr>
+            <tr>
+                <td>Perdita Potere Acquisto (Inflazione ${inflation}%)</td>
+                <td class="text-right" style="color:var(--danger)">-${formatCurrency(resA.finalNetBalance - resA.finalRealBalance)}</td>
+                <td class="text-right" style="color:var(--danger)">-${formatCurrency(resB.finalNetBalance - resB.finalRealBalance)}</td>
+                <td class="text-right">-</td>
+            </tr>
+            <tr style="font-weight: bold;">
+                <td>Capitale Finale Reale</td>
+                <td class="text-right">${formatCurrency(resA.finalRealBalance)}</td>
+                <td class="text-right">${formatCurrency(resB.finalRealBalance)}</td>
+                <td class="text-right">${(resA.finalRealBalance - resB.finalRealBalance) > 0 ? '+' : ''}${diff(resA.finalRealBalance, resB.finalRealBalance)}</td>
+            </tr>
+        `;
+        tbody.innerHTML = html;
+    }
+
+    function updateSimulationTable(resA, resB, maxYears) {
+        const tbody = document.querySelector('#table-simulation tbody');
+        let html = '';
+        
+        for (let i = 0; i <= maxYears; i++) {
+            let valA = resA.yearlySeries[i] ? resA.yearlySeries[i].netBalanceIfLiquidated : null;
+            let valB = resB.yearlySeries[i] ? resB.yearlySeries[i].netBalanceIfLiquidated : null;
+            let realA = resA.yearlySeries[i] ? resA.yearlySeries[i].realBalance : null;
+            let realB = resB.yearlySeries[i] ? resB.yearlySeries[i].realBalance : null;
+            
+            let diff = (valA !== null && valB !== null) ? valA - valB : 0;
+            
+            html += `
+                <tr>
+                    <td>Anno ${i}</td>
+                    <td class="text-right">${valA !== null ? formatCurrency(valA) : '-'}</td>
+                    <td class="text-right">${valB !== null ? formatCurrency(valB) : '-'}</td>
+                    <td class="text-right" style="color: ${diff > 0 ? 'var(--color-a)' : (diff < 0 ? 'var(--color-b)' : 'inherit')}">
+                        ${diff > 0 ? '+' : ''}${formatCurrency(diff)}
+                    </td>
+                    <td class="text-right text-muted">${realA !== null ? formatCurrency(realA) : '-'}</td>
+                    <td class="text-right text-muted">${realB !== null ? formatCurrency(realB) : '-'}</td>
+                </tr>
+            `;
+        }
+        tbody.innerHTML = html;
+    }
+
+    function updateCharts(resA, resB, maxYears) {
+        const labels = Array.from({length: maxYears + 1}, (_, i) => `Anno ${i}`);
+        
+        const dataCapNomA = resA.yearlySeries.map(s => s.netBalanceIfLiquidated);
+        const dataCapNomB = resB.yearlySeries.map(s => s.netBalanceIfLiquidated);
+        const dataCapRealA = resA.yearlySeries.map(s => s.realBalance);
+        const dataCapRealB = resB.yearlySeries.map(s => s.realBalance);
+
+        // Chart 1: Capital Growth
+        const ctxCap = document.getElementById('chart-capital').getContext('2d');
+        if (chartCapitalInstance) chartCapitalInstance.destroy();
+        
+        chartCapitalInstance = new Chart(ctxCap, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: `${resA.name} (Nominale Netto)`,
+                        data: dataCapNomA,
+                        borderColor: '#2563eb',
+                        backgroundColor: '#2563eb',
+                        tension: 0.2,
+                        borderWidth: 2
+                    },
+                    {
+                        label: `${resB.name} (Nominale Netto)`,
+                        data: dataCapNomB,
+                        borderColor: '#16a34a',
+                        backgroundColor: '#16a34a',
+                        tension: 0.2,
+                        borderWidth: 2
+                    },
+                    {
+                        label: `${resA.name} (Reale)`,
+                        data: dataCapRealA,
+                        borderColor: '#93c5fd',
+                        borderDash: [5, 5],
+                        pointRadius: 0,
+                        borderWidth: 2
+                    },
+                    {
+                        label: `${resB.name} (Reale)`,
+                        data: dataCapRealB,
+                        borderColor: '#86efac',
+                        borderDash: [5, 5],
+                        pointRadius: 0,
+                        borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + formatCurrency(context.raw);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Chart 2: Cumulative Returns %
+        const calcRet = (arr, c0) => arr.map(v => ((v - c0) / c0) * 100);
+        const dataRetNetA = calcRet(dataCapNomA, resA.initialCapital);
+        const dataRetNetB = calcRet(dataCapNomB, resB.initialCapital);
+        const dataRetRealA = calcRet(dataCapRealA, resA.initialCapital);
+        const dataRetRealB = calcRet(dataCapRealB, resB.initialCapital);
+
+        const ctxRet = document.getElementById('chart-returns').getContext('2d');
+        if (chartReturnsInstance) chartReturnsInstance.destroy();
+
+        chartReturnsInstance = new Chart(ctxRet, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: `Rend. Netto ${resA.name}`,
+                        data: dataRetNetA,
+                        borderColor: '#2563eb',
+                        tension: 0.2
+                    },
+                    {
+                        label: `Rend. Netto ${resB.name}`,
+                        data: dataRetNetB,
+                        borderColor: '#16a34a',
+                        tension: 0.2
+                    },
+                    {
+                        label: `Rend. Reale ${resA.name}`,
+                        data: dataRetRealA,
+                        borderColor: '#93c5fd',
+                        borderDash: [5,5],
+                        pointRadius: 0
+                    },
+                    {
+                        label: `Rend. Reale ${resB.name}`,
+                        data: dataRetRealB,
+                        borderColor: '#86efac',
+                        borderDash: [5,5],
+                        pointRadius: 0
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + formatPercent(context.raw);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function resetForm() {
+        document.querySelectorAll('input').forEach(el => {
+            if(el.hasAttribute('value')) el.value = el.getAttribute('value');
+        });
+        document.getElementById('tax-select-a').value = "26";
+        document.getElementById('tax-select-b').value = "12.5";
+        toggleCustomTax('a');
+        toggleCustomTax('b');
+        calculateAll();
+    }
+
+    function copyToClipboard() {
+        const nameA = document.getElementById('name-a').value || 'Inv. A';
+        const nameB = document.getElementById('name-b').value || 'Inv. B';
+        const capA = document.getElementById('kpi-cap-a').textContent;
+        const capB = document.getElementById('kpi-cap-b').textContent;
+        const cagrA = document.getElementById('kpi-ret-a').textContent;
+        const cagrB = document.getElementById('kpi-ret-b').textContent;
+        const diffAbs = document.getElementById('kpi-diff-abs').textContent;
+        const diffRel = document.getElementById('kpi-diff-rel').textContent;
+
+        const text = `Confronto Investimenti:\n\n` +
+            `[${nameA}]\nCapitale Netto: ${capA}\nRendimento Netto Annuo: ${cagrA}\n\n` +
+            `[${nameB}]\nCapitale Netto: ${capB}\nRendimento Netto Annuo: ${cagrB}\n\n` +
+            `Differenza A vs B:\nAssoluta: ${diffAbs}\nRelativa: ${diffRel}\n`;
+
+        navigator.clipboard.writeText(text).then(() => {
+            alert('Risultati copiati negli appunti!');
+        }).catch(err => {
+            console.error('Errore nella copia: ', err);
+            alert('Impossibile copiare negli appunti.');
+        });
+    }
+
+    // Inizializzazione al caricamento
+    window.onload = () => {
+        toggleCustomTax('a');
+        toggleCustomTax('b');
+        calculateAll();
+    };
+
+</script>
+</body>
+</html>
