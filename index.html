@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>InvestCompare</title>
+<!-- Fix per Chart.js applicato -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 :root{
@@ -74,96 +75,97 @@ details summary{cursor:pointer;font-weight:600;padding:6px 0}
 <header>
   <div class="brand">InvestCompare</div>
   <nav>
-    <a href="#simulazione">Simulazione</a>
-    <a href="#confronto">Confronto</a>
-    <a href="#dettagli">Dettagli</a>
-    <a href="#formule">Formule</a>
+    <a href="#simulazione" data-i18n="sim">Simulazione</a>
+    <a href="#confronto" data-i18n="comp">Confronto</a>
+    <a href="#dettagli" data-i18n="det">Dettagli</a>
+    <a href="#formule" data-i18n="form">Formule</a>
   </nav>
+  <button class="btn" id="langBtn" aria-label="Cambia lingua">EN</button>
   <button class="btn" id="themeBtn" aria-label="Cambia tema">🌙</button>
-  <button class="btn" id="resetBtn">Reset</button>
+  <button class="btn" id="resetBtn" data-i18n="btn_reset">Reset</button>
 </header>
 <main>
   <section class="hero">
-    <span class="badge">Simulazione personalizzabile</span>
-    <h1>Quanto rende davvero il tuo investimento?</h1>
-    <p>Confronta due investimenti tenendo conto di tasse, costi, commissioni e inflazione.</p>
+    <span class="badge" data-i18n="hero_badge">Simulazione personalizzabile</span>
+    <h1 data-i18n="hero_title">Quanto rende davvero il tuo investimento?</h1>
+    <p data-i18n="hero_desc">Confronta due investimenti tenendo conto di tasse, costi, commissioni e inflazione.</p>
   </section>
 
   <section id="simulazione">
     <div class="card">
-      <h2>Parametri della simulazione</h2>
-      <p class="sub">Valgono per entrambi gli investimenti.</p>
+      <h2 data-i18n="params_title">Parametri della simulazione</h2>
+      <p class="sub" data-i18n="params_sub">Valgono per entrambi gli investimenti.</p>
       <div class="row3">
-        <div class="field"><label for="years">Durata (anni)</label><input type="number" id="years" min="1" max="100" value="10"><div class="err" id="err-years"></div></div>
-        <div class="field"><label for="inflation">Inflazione media annua (%)</label><input type="number" id="inflation" step="0.1" value="2.00"><div class="err" id="err-inflation"></div></div>
-        <div class="field"><label for="compounding">Capitalizzazione</label><select id="compounding"><option value="annual">Annuale</option><option value="monthly">Mensile</option></select></div>
+        <div class="field"><label for="years" data-i18n="lbl_years">Durata (anni)</label><input type="number" id="years" min="1" max="100" value="10"><div class="err" id="err-years"></div></div>
+        <div class="field"><label for="inflation" data-i18n="lbl_inflation">Inflazione media annua (%)</label><input type="number" id="inflation" step="0.1" value="2.00"><div class="err" id="err-inflation"></div></div>
+        <div class="field"><label for="compounding" data-i18n="lbl_compounding">Capitalizzazione</label><select id="compounding"><option value="annual" data-i18n="opt_annual">Annuale</option><option value="monthly" data-i18n="opt_monthly">Mensile</option></select></div>
       </div>
       <div class="row3">
-        <div class="field"><label for="contribFreq">Versamento periodico</label><select id="contribFreq"><option value="none">Nessuno</option><option value="monthly">Mensile</option></select></div>
-        <div class="field" id="contribWrap" style="display:none"><label for="contribAmount">Importo versamento mensile (€)</label><input type="number" id="contribAmount" min="0" value="0"></div>
+        <div class="field"><label for="contribFreq" data-i18n="lbl_contribFreq">Versamento periodico</label><select id="contribFreq"><option value="none" data-i18n="opt_none">Nessuno</option><option value="monthly" data-i18n="opt_monthly">Mensile</option></select></div>
+        <div class="field" id="contribWrap" style="display:none"><label for="contribAmount" data-i18n="lbl_contribAmount">Importo versamento mensile (€)</label><input type="number" id="contribAmount" min="0" value="0"></div>
       </div>
     </div>
 
     <div class="grid2">
       <div class="panel a">
-        <h3>Investimento A</h3>
-        <div class="field"><label for="a-name">Nome investimento</label><input type="text" id="a-name" value="Investimento A"></div>
-        <div class="field"><label for="a-capital">Capitale iniziale (€)</label><input type="number" id="a-capital" min="0" value="10000"><div class="err" id="err-a-capital"></div></div>
-        <div class="field"><label for="a-return">Rendimento lordo annuo (%)</label><input type="number" id="a-return" step="0.1" value="5" title="Rendimento nominale prima di tasse e costi."><div class="hint">Rendimento nominale prima di tasse e costi.</div></div>
-        <fieldset><legend>Fiscalità</legend>
-          <div class="field"><label for="a-taxMode">Aliquota fiscale</label><select id="a-taxMode"><option value="26">26%</option><option value="12.5">12,5%</option><option value="custom">Personalizzata</option></select></div>
-          <div class="field" id="a-customTaxWrap" style="display:none"><label for="a-customTax">Aliquota personalizzata (%)</label><input type="number" id="a-customTax" value="26"></div>
-          <p class="hint"></p>
+        <h3 data-i18n="inv_a">Investimento A</h3>
+        <div class="field"><label for="a-name" data-i18n="lbl_name">Nome investimento</label><input type="text" id="a-name" value="Investimento A"></div>
+        <div class="field"><label for="a-capital" data-i18n="lbl_capital">Capitale iniziale (€)</label><input type="number" id="a-capital" min="0" value="10000"><div class="err" id="err-a-capital"></div></div>
+        <div class="field"><label for="a-return" data-i18n="lbl_return">Rendimento lordo annuo (%)</label><input type="number" id="a-return" step="0.1" value="5" data-i18n-title="hint_return" title="Rendimento nominale prima di tasse e costi."><div class="hint" data-i18n="hint_return">Rendimento nominale prima di tasse e costi.</div></div>
+        <fieldset><legend data-i18n="leg_tax">Fiscalità</legend>
+          <div class="field"><label for="a-taxMode" data-i18n="lbl_taxMode">Aliquota fiscale</label><select id="a-taxMode"><option value="26">26%</option><option value="12.5">12,5%</option><option value="custom" data-i18n="opt_custom">Personalizzata</option></select></div>
+          <div class="field" id="a-customTaxWrap" style="display:none"><label for="a-customTax" data-i18n="lbl_customTax">Aliquota personalizzata (%)</label><input type="number" id="a-customTax" value="26"></div>
+          <p class="hint" data-i18n="hint_tax">Le aliquote sono parametri di simulazione e devono essere verificate in relazione allo specifico strumento e alla normativa applicabile.</p>
         </fieldset>
-        <fieldset><legend>Imposta di bollo</legend>
-          <div class="field"><label for="a-stampRate">Imposta di bollo (% annua)</label><input type="number" id="a-stampRate" step="0.01" value="0.20"></div>
-          <div class="field"><label for="a-stampMode">Modalità bollo</label><select id="a-stampMode"><option value="patrimonio">% annua sul patrimonio</option><option value="average">% annua sul valore medio</option><option value="none">Disattivata</option></select></div>
+        <fieldset><legend data-i18n="leg_stamp">Imposta di bollo</legend>
+          <div class="field"><label for="a-stampRate" data-i18n="lbl_stampRate">Imposta di bollo (% annua)</label><input type="number" id="a-stampRate" step="0.01" value="0.20"></div>
+          <div class="field"><label for="a-stampMode" data-i18n="lbl_stampMode">Modalità bollo</label><select id="a-stampMode"><option value="patrimonio" data-i18n="opt_patrimonio">% annua sul patrimonio</option><option value="average" data-i18n="opt_average">% annua sul valore medio</option><option value="none" data-i18n="opt_none_stamp">Disattivata</option></select></div>
         </fieldset>
-        <fieldset><legend>Commissioni</legend>
-          <div class="row3"><div class="field"><label for="a-feeInitPct">Iniziale (%)</label><input type="number" id="a-feeInitPct" value="0"></div><div class="field"><label for="a-feeInitFix">Iniziale fissa (€)</label><input type="number" id="a-feeInitFix" value="0"></div></div>
-          <div class="row3"><div class="field"><label for="a-feeAnnualPct">Annuale (%)</label><input type="number" id="a-feeAnnualPct" value="0"></div><div class="field"><label for="a-feeAnnualFix">Annuale fissa (€)</label><input type="number" id="a-feeAnnualFix" value="0"></div></div>
-          <div class="row3"><div class="field"><label for="a-feeFinalPct">Finale (%)</label><input type="number" id="a-feeFinalPct" value="0"></div><div class="field"><label for="a-feeFinalFix">Finale fissa (€)</label><input type="number" id="a-feeFinalFix" value="0"></div></div>
+        <fieldset><legend data-i18n="leg_fees">Commissioni</legend>
+          <div class="row3"><div class="field"><label for="a-feeInitPct" data-i18n="lbl_initPct">Iniziale (%)</label><input type="number" id="a-feeInitPct" value="0"></div><div class="field"><label for="a-feeInitFix" data-i18n="lbl_initFix">Iniziale fissa (€)</label><input type="number" id="a-feeInitFix" value="0"></div></div>
+          <div class="row3"><div class="field"><label for="a-feeAnnualPct" data-i18n="lbl_annPct">Annuale (%)</label><input type="number" id="a-feeAnnualPct" value="0"></div><div class="field"><label for="a-feeAnnualFix" data-i18n="lbl_annFix">Annuale fissa (€)</label><input type="number" id="a-feeAnnualFix" value="0"></div></div>
+          <div class="row3"><div class="field"><label for="a-feeFinalPct" data-i18n="lbl_finPct">Finale (%)</label><input type="number" id="a-feeFinalPct" value="0"></div><div class="field"><label for="a-feeFinalFix" data-i18n="lbl_finFix">Finale fissa (€)</label><input type="number" id="a-feeFinalFix" value="0"></div></div>
         </fieldset>
         <details>
-          <summary>Impostazioni avanzate</summary>
-          <div class="field" style="margin-top:10px"><label><input type="checkbox" id="a-varReturn"> Rendimento variabile per anno</label></div>
-          <div class="hint">Se attivo, sostituisce il rendimento costante con un valore diverso per ciascun anno.</div>
+          <summary data-i18n="sum_adv">Impostazioni avanzate</summary>
+          <div class="field" style="margin-top:10px"><label><input type="checkbox" id="a-varReturn"> <span data-i18n="lbl_varReturn">Rendimento variabile per anno</span></label></div>
+          <div class="hint" data-i18n="hint_varReturn">Se attivo, sostituisce il rendimento costante con un valore diverso per ciascun anno.</div>
           <div id="a-varReturnList" style="display:none;gap:8px;margin-top:8px"></div>
         </details>
       </div>
       <div class="panel b">
-        <h3>Investimento B</h3>
-        <div class="field"><label for="b-name">Nome investimento</label><input type="text" id="b-name" value="Investimento B"></div>
-        <div class="field"><label for="b-capital">Capitale iniziale (€)</label><input type="number" id="b-capital" min="0" value="10000"><div class="err" id="err-b-capital"></div></div>
-        <div class="field"><label for="b-return">Rendimento lordo annuo (%)</label><input type="number" id="b-return" step="0.1" value="4"><div class="hint">Rendimento nominale prima di tasse e costi.</div></div>
-        <fieldset><legend>Fiscalità</legend>
-          <div class="field"><label for="b-taxMode">Aliquota fiscale</label><select id="b-taxMode"><option value="26">26%</option><option value="12.5">12,5%</option><option value="custom">Personalizzata</option></select></div>
-          <div class="field" id="b-customTaxWrap" style="display:none"><label for="b-customTax">Aliquota personalizzata (%)</label><input type="number" id="b-customTax" value="26"></div>
+        <h3 data-i18n="inv_b">Investimento B</h3>
+        <div class="field"><label for="b-name" data-i18n="lbl_name">Nome investimento</label><input type="text" id="b-name" value="Investimento B"></div>
+        <div class="field"><label for="b-capital" data-i18n="lbl_capital">Capitale iniziale (€)</label><input type="number" id="b-capital" min="0" value="10000"><div class="err" id="err-b-capital"></div></div>
+        <div class="field"><label for="b-return" data-i18n="lbl_return">Rendimento lordo annuo (%)</label><input type="number" id="b-return" step="0.1" value="4"><div class="hint" data-i18n="hint_return">Rendimento nominale prima di tasse e costi.</div></div>
+        <fieldset><legend data-i18n="leg_tax">Fiscalità</legend>
+          <div class="field"><label for="b-taxMode" data-i18n="lbl_taxMode">Aliquota fiscale</label><select id="b-taxMode"><option value="26">26%</option><option value="12.5">12,5%</option><option value="custom" data-i18n="opt_custom">Personalizzata</option></select></div>
+          <div class="field" id="b-customTaxWrap" style="display:none"><label for="b-customTax" data-i18n="lbl_customTax">Aliquota personalizzata (%)</label><input type="number" id="b-customTax" value="26"></div>
         </fieldset>
-        <fieldset><legend>Imposta di bollo</legend>
-          <div class="field"><label for="b-stampRate">Imposta di bollo (% annua)</label><input type="number" id="b-stampRate" step="0.01" value="0.20"></div>
-          <div class="field"><label for="b-stampMode">Modalità bollo</label><select id="b-stampMode"><option value="patrimonio">% annua sul patrimonio</option><option value="average">% annua sul valore medio</option><option value="none">Disattivata</option></select></div>
+        <fieldset><legend data-i18n="leg_stamp">Imposta di bollo</legend>
+          <div class="field"><label for="b-stampRate" data-i18n="lbl_stampRate">Imposta di bollo (% annua)</label><input type="number" id="b-stampRate" step="0.01" value="0.20"></div>
+          <div class="field"><label for="b-stampMode" data-i18n="lbl_stampMode">Modalità bollo</label><select id="b-stampMode"><option value="patrimonio" data-i18n="opt_patrimonio">% annua sul patrimonio</option><option value="average" data-i18n="opt_average">% annua sul valore medio</option><option value="none" data-i18n="opt_none_stamp">Disattivata</option></select></div>
         </fieldset>
-        <fieldset><legend>Commissioni</legend>
-          <div class="row3"><div class="field"><label for="b-feeInitPct">Iniziale (%)</label><input type="number" id="b-feeInitPct" value="0"></div><div class="field"><label for="b-feeInitFix">Iniziale fissa (€)</label><input type="number" id="b-feeInitFix" value="0"></div></div>
-          <div class="row3"><div class="field"><label for="b-feeAnnualPct">Annuale (%)</label><input type="number" id="b-feeAnnualPct" value="0"></div><div class="field"><label for="b-feeAnnualFix">Annuale fissa (€)</label><input type="number" id="b-feeAnnualFix" value="0"></div></div>
-          <div class="row3"><div class="field"><label for="b-feeFinalPct">Finale (%)</label><input type="number" id="b-feeFinalPct" value="0"></div><div class="field"><label for="b-feeFinalFix">Finale fissa (€)</label><input type="number" id="b-feeFinalFix" value="0"></div></div>
+        <fieldset><legend data-i18n="leg_fees">Commissioni</legend>
+          <div class="row3"><div class="field"><label for="b-feeInitPct" data-i18n="lbl_initPct">Iniziale (%)</label><input type="number" id="b-feeInitPct" value="0"></div><div class="field"><label for="b-feeInitFix" data-i18n="lbl_initFix">Iniziale fissa (€)</label><input type="number" id="b-feeInitFix" value="0"></div></div>
+          <div class="row3"><div class="field"><label for="b-feeAnnualPct" data-i18n="lbl_annPct">Annuale (%)</label><input type="number" id="b-feeAnnualPct" value="0"></div><div class="field"><label for="b-feeAnnualFix" data-i18n="lbl_annFix">Annuale fissa (€)</label><input type="number" id="b-feeAnnualFix" value="0"></div></div>
+          <div class="row3"><div class="field"><label for="b-feeFinalPct" data-i18n="lbl_finPct">Finale (%)</label><input type="number" id="b-feeFinalPct" value="0"></div><div class="field"><label for="b-feeFinalFix" data-i18n="lbl_finFix">Finale fissa (€)</label><input type="number" id="b-feeFinalFix" value="0"></div></div>
         </fieldset>
         <details>
-          <summary>Impostazioni avanzate</summary>
-          <div class="field" style="margin-top:10px"><label><input type="checkbox" id="b-varReturn"> Rendimento variabile per anno</label></div>
-          <div class="hint">Se attivo, sostituisce il rendimento costante con un valore diverso per ciascun anno.</div>
+          <summary data-i18n="sum_adv">Impostazioni avanzate</summary>
+          <div class="field" style="margin-top:10px"><label><input type="checkbox" id="b-varReturn"> <span data-i18n="lbl_varReturn">Rendimento variabile per anno</span></label></div>
+          <div class="hint" data-i18n="hint_varReturn">Se attivo, sostituisce il rendimento costante con un valore diverso per ciascun anno.</div>
           <div id="b-varReturnList" style="display:none;gap:8px;margin-top:8px"></div>
         </details>
       </div>
     </div>
-    <div class="actions"><button class="btn btn-primary" id="recalcBtn">Ricalcola</button></div>
+    <div class="actions"><button class="btn btn-primary" id="recalcBtn" data-i18n="btn_recalc">Ricalcola</button></div>
   </section>
 
   <section id="confronto">
     <div class="card">
-      <h2>Risultati</h2>
-      <p class="sub">Capitale finale: quanto avrai alla fine del periodo. Capitale reale: valore corretto per l'inflazione. Costi totali: somma di tasse, bollo, commissioni e altri costi simulati.</p>
+      <h2 data-i18n="res_title">Risultati</h2>
+      <p class="sub" data-i18n="res_sub">Capitale finale: quanto avrai alla fine del periodo. Capitale reale: valore corretto per l'inflazione. Costi totali: somma di tasse, bollo, commissioni e altri costi simulati.</p>
       <div class="grid2">
         <div>
           <h3 style="color:var(--a)" id="kpi-a-title">Investimento A</h3>
@@ -179,52 +181,137 @@ details summary{cursor:pointer;font-weight:600;padding:6px 0}
     </div>
 
     <div class="card">
-      <h2>Confronto numerico</h2>
-      <div class="twrap"><table id="compTable"><thead><tr><th>Indicatore</th><th>A</th><th>B</th><th>Diff. assoluta</th><th>Diff. %</th></tr></thead><tbody></tbody></table></div>
+      <h2 data-i18n="num_comp_title">Confronto numerico</h2>
+      <div class="twrap"><table id="compTable"><thead><tr><th data-i18n="th_ind">Indicatore</th><th>A</th><th>B</th><th data-i18n="th_diff_abs">Diff. assoluta</th><th data-i18n="th_diff_pct">Diff. %</th></tr></thead><tbody></tbody></table></div>
     </div>
 
     <div class="card">
-      <h2>Evoluzione del capitale</h2>
+      <h2 data-i18n="chart_cap_title">Evoluzione del capitale</h2>
       <canvas id="chartCapital" height="110" role="img" aria-label="Grafico evoluzione del capitale netto e reale per A e B"></canvas>
-      <p id="chartFallback" class="hint" style="display:none">Grafico non disponibile: consulta i KPI e le tabelle qui sopra.</p>
+      <p id="chartFallback" class="hint" style="display:none" data-i18n="chart_fallback">Grafico non disponibile: consulta i KPI e le tabelle qui sopra.</p>
     </div>
 
     <div class="card">
-      <h2>Rendimento cumulato</h2>
-      <p class="sub">Crescita percentuale rispetto al capitale iniziale, netta e reale.</p>
+      <h2 data-i18n="chart_ret_title">Rendimento cumulato</h2>
+      <p class="sub" data-i18n="chart_ret_sub">Crescita percentuale rispetto al capitale iniziale, netta e reale.</p>
       <canvas id="chartReturn" height="110" role="img" aria-label="Grafico rendimento cumulato netto e reale per A e B"></canvas>
     </div>
   </section>
 
   <section id="dettagli">
     <div class="card">
-      <h2>Simulazione dettagliata</h2>
-      <p class="sub">Valori a fine anno.</p>
-      <div class="twrap"><table id="yearlyTable"><thead><tr><th>Anno</th><th>Valore A</th><th>Valore B</th><th>Differenza</th><th>Reale A</th><th>Reale B</th></tr></thead><tbody></tbody></table></div>
-      <div class="actions"><button class="btn" id="csvBtn">Esporta CSV</button></div>
+      <h2 data-i18n="det_title">Simulazione dettagliata</h2>
+      <p class="sub" data-i18n="det_sub">Valori a fine anno.</p>
+      <div class="twrap"><table id="yearlyTable"><thead><tr><th data-i18n="th_year">Anno</th><th data-i18n="th_valA">Valore A</th><th data-i18n="th_valB">Valore B</th><th data-i18n="th_diff">Differenza</th><th data-i18n="th_realA">Reale A</th><th data-i18n="th_realB">Reale B</th></tr></thead><tbody></tbody></table></div>
+      <div class="actions"><button class="btn" id="csvBtn" data-i18n="btn_csv">Esporta CSV</button></div>
     </div>
   </section>
 
   <section id="formule">
     <div class="card">
-      <h2>Formule</h2>
-      <p class="sub">Il motore calcola i valori periodo per periodo (non con un'unica formula finale): ad ogni periodo si applicano rendimento lordo, tasse sul profitto imponibile, imposta di bollo, commissioni ed eventuali versamenti.</p>
+      <h2 data-i18n="form_title">Formule</h2>
+      <p class="sub" data-i18n="form_sub">Il motore calcola i valori periodo per periodo (non con un'unica formula finale): ad ogni periodo si applicano rendimento lordo, tasse sul profitto imponibile, imposta di bollo, commissioni ed eventuali versamenti.</p>
       <ul class="hint">
-        <li>Valore reale = Valore nominale / (1 + inflazione)^anni</li>
-        <li>Rendimento reale ≈ (1 + rendimento nominale) / (1 + inflazione) − 1</li>
-        <li>La tassazione è applicata al profitto, non al capitale complessivo, per evitare doppi conteggi.</li>
+        <li data-i18n="form_l1">Valore reale = Valore nominale / (1 + inflazione)^anni</li>
+        <li data-i18n="form_l2">Rendimento reale ≈ (1 + rendimento nominale) / (1 + inflazione) − 1</li>
+        <li data-i18n="form_l3">La tassazione è applicata al profitto, non al capitale complessivo, per evitare doppi conteggi.</li>
       </ul>
     </div>
   </section>
 </main>
 
 <footer>
-  <strong>Nota informativa</strong><br>
-  Questa applicazione effettua simulazioni matematiche sulla base dei parametri inseriti dall'utente e non costituisce consulenza finanziaria, fiscale o legale. La fiscalità effettiva, le imposte di bollo, le commissioni e le modalità di tassazione possono dipendere dallo specifico strumento, dal rapporto utilizzato e dalla normativa vigente. Verificare sempre i dati applicabili al proprio caso.
-  <div class="actions"><button class="btn" id="clearBtn">Cancella dati salvati</button></div>
+  <strong data-i18n="foot_nota">Nota informativa</strong><br>
+  <span data-i18n="foot_text">Questa applicazione effettua simulazioni matematiche sulla base dei parametri inseriti dall'utente e non costituisce consulenza finanziaria, fiscale o legale. La fiscalità effettiva, le imposte di bollo, le commissioni e le modalità di tassazione possono dipendere dallo specifico strumento, dal rapporto utilizzato e dalla normativa vigente. Verificare sempre i dati applicabili al proprio caso.</span>
+  <div class="actions"><button class="btn" id="clearBtn" data-i18n="btn_clear">Cancella dati salvati</button></div>
 </footer>
 
 <script>
+// --- i18n Dictionary ---
+const i18n = {
+  it: {
+    sim: "Simulazione", comp: "Confronto", det: "Dettagli", form: "Formule", btn_reset: "Reset",
+    hero_badge: "Simulazione personalizzabile", hero_title: "Quanto rende davvero il tuo investimento?", hero_desc: "Confronta due investimenti tenendo conto di tasse, costi, commissioni e inflazione.",
+    params_title: "Parametri della simulazione", params_sub: "Valgono per entrambi gli investimenti.",
+    lbl_years: "Durata (anni)", lbl_inflation: "Inflazione media annua (%)", lbl_compounding: "Capitalizzazione",
+    opt_annual: "Annuale", opt_monthly: "Mensile", lbl_contribFreq: "Versamento periodico", opt_none: "Nessuno", lbl_contribAmount: "Importo versamento mensile (€)",
+    inv_a: "Investimento A", inv_b: "Investimento B",
+    lbl_name: "Nome investimento", lbl_capital: "Capitale iniziale (€)", lbl_return: "Rendimento lordo annuo (%)", hint_return: "Rendimento nominale prima di tasse e costi.",
+    leg_tax: "Fiscalità", lbl_taxMode: "Aliquota fiscale", opt_custom: "Personalizzata", lbl_customTax: "Aliquota personalizzata (%)",
+    hint_tax: "Le aliquote sono parametri di simulazione e devono essere verificate in relazione allo specifico strumento e alla normativa applicabile.",
+    leg_stamp: "Imposta di bollo", lbl_stampRate: "Imposta di bollo (% annua)", lbl_stampMode: "Modalità bollo", opt_patrimonio: "% annua sul patrimonio", opt_average: "% annua sul valore medio", opt_none_stamp: "Disattivata",
+    leg_fees: "Commissioni", lbl_initPct: "Iniziale (%)", lbl_initFix: "Iniziale fissa (€)", lbl_annPct: "Annuale (%)", lbl_annFix: "Annuale fissa (€)", lbl_finPct: "Finale (%)", lbl_finFix: "Finale fissa (€)",
+    sum_adv: "Impostazioni avanzate", lbl_varReturn: "Rendimento variabile per anno", hint_varReturn: "Se attivo, sostituisce il rendimento costante con un valore diverso per ciascun anno.",
+    btn_recalc: "Ricalcola",
+    res_title: "Risultati", res_sub: "Capitale finale: quanto avrai alla fine del periodo. Capitale reale: valore corretto per l'inflazione. Costi totali: somma di tasse, bollo, commissioni e altri costi simulati.",
+    num_comp_title: "Confronto numerico", th_ind: "Indicatore", th_diff_abs: "Diff. assoluta", th_diff_pct: "Diff. %",
+    chart_cap_title: "Evoluzione del capitale", chart_fallback: "Grafico non disponibile: consulta i KPI e le tabelle qui sopra.",
+    chart_ret_title: "Rendimento cumulato", chart_ret_sub: "Crescita percentuale rispetto al capitale iniziale, netta e reale.",
+    det_title: "Simulazione dettagliata", det_sub: "Valori a fine anno.", th_year: "Anno", th_valA: "Valore A", th_valB: "Valore B", th_diff: "Differenza", th_realA: "Reale A", th_realB: "Reale B", btn_csv: "Esporta CSV",
+    form_title: "Formule", form_sub: "Il motore calcola i valori periodo per periodo (non con un'unica formula finale): ad ogni periodo si applicano rendimento lordo, tasse sul profitto imponibile, imposta di bollo, commissioni ed eventuali versamenti.",
+    form_l1: "Valore reale = Valore nominale / (1 + inflazione)^anni", form_l2: "Rendimento reale ≈ (1 + rendimento nominale) / (1 + inflazione) − 1", form_l3: "La tassazione è applicata al profitto, non al capitale complessivo, per evitare doppi conteggi.",
+    foot_nota: "Nota informativa", foot_text: "Questa applicazione effettua simulazioni matematiche sulla base dei parametri inseriti dall'utente e non costituisce consulenza finanziaria, fiscale o legale. La fiscalità effettiva, le imposte di bollo, le commissioni e le modalità di tassazione possono dipendere dallo specifico strumento, dal rapporto utilizzato e dalla normativa vigente. Verificare sempre i dati applicabili al proprio caso.",
+    btn_clear: "Cancella dati salvati",
+    kpi_net_cap: "Capitale finale netto", kpi_net_prof: "Profitto netto", kpi_net_ret: "Rendimento netto annualizzato", kpi_real_cap: "Capitale finale reale", kpi_real_ret: "Rendimento reale annualizzato", kpi_costs: "Costi e imposte totali",
+    comp_init_cap: "Capitale iniziale", comp_gross_prof: "Profitto lordo", comp_tax: "Tasse", comp_stamp: "Bollo", comp_total_cost: "Costi totali",
+    diff_ends_with: " termina con ", diff_more: " in più ", diff_less: " in meno ", diff_compared: "rispetto a ", diff_eq: " (differenza pari al ",
+    chart_net: "Netto ", chart_real: "Reale ", chart_year: "Anno ", chart_ret_net: "Rendimento netto ", chart_ret_real: "Rendimento reale ",
+    err_years: "Durata tra 1 e 100 anni.", err_infl: "Inflazione non valida.", err_cap: "Capitale non valido."
+  },
+  en: {
+    sim: "Simulation", comp: "Comparison", det: "Details", form: "Formulas", btn_reset: "Reset",
+    hero_badge: "Customizable Simulation", hero_title: "How much does your investment really yield?", hero_desc: "Compare two investments factoring in taxes, costs, fees, and inflation.",
+    params_title: "Simulation Parameters", params_sub: "Applies to both investments.",
+    lbl_years: "Duration (years)", lbl_inflation: "Average annual inflation (%)", lbl_compounding: "Compounding",
+    opt_annual: "Annual", opt_monthly: "Monthly", lbl_contribFreq: "Periodic contribution", opt_none: "None", lbl_contribAmount: "Monthly contribution amount (€)",
+    inv_a: "Investment A", inv_b: "Investment B",
+    lbl_name: "Investment Name", lbl_capital: "Initial Capital (€)", lbl_return: "Gross annual return (%)", hint_return: "Nominal return before taxes and costs.",
+    leg_tax: "Taxation", lbl_taxMode: "Tax rate", opt_custom: "Custom", lbl_customTax: "Custom tax rate (%)",
+    hint_tax: "Tax rates are simulation parameters and should be verified regarding the specific instrument and applicable laws.",
+    leg_stamp: "Stamp Duty", lbl_stampRate: "Stamp duty (% annual)", lbl_stampMode: "Stamp duty mode", opt_patrimonio: "Annual % on assets", opt_average: "Annual % on avg value", opt_none_stamp: "Disabled",
+    leg_fees: "Fees", lbl_initPct: "Initial (%)", lbl_initFix: "Initial fixed (€)", lbl_annPct: "Annual (%)", lbl_annFix: "Annual fixed (€)", lbl_finPct: "Final (%)", lbl_finFix: "Final fixed (€)",
+    sum_adv: "Advanced settings", lbl_varReturn: "Variable return per year", hint_varReturn: "If active, replaces the constant return with a different value for each year.",
+    btn_recalc: "Recalculate",
+    res_title: "Results", res_sub: "Final capital: what you will have at the end of the period. Real capital: value adjusted for inflation. Total costs: sum of taxes, stamp duty, fees, and other simulated costs.",
+    num_comp_title: "Numerical Comparison", th_ind: "Indicator", th_diff_abs: "Abs. Diff.", th_diff_pct: "Diff. %",
+    chart_cap_title: "Capital Evolution", chart_fallback: "Chart unavailable: check KPIs and tables above.",
+    chart_ret_title: "Cumulative Return", chart_ret_sub: "Percentage growth compared to initial capital, net and real.",
+    det_title: "Detailed Simulation", det_sub: "Year-end values.", th_year: "Year", th_valA: "Value A", th_valB: "Value B", th_diff: "Difference", th_realA: "Real A", th_realB: "Real B", btn_csv: "Export CSV",
+    form_title: "Formulas", form_sub: "The engine calculates values period by period (not with a single final formula): gross return, taxes on taxable profit, stamp duty, fees, and any contributions are applied to each period.",
+    form_l1: "Real value = Nominal value / (1 + inflation)^years", form_l2: "Real return ≈ (1 + nominal return) / (1 + inflation) − 1", form_l3: "Taxation is applied to profit, not total capital, to avoid double counting.",
+    foot_nota: "Disclaimer", foot_text: "This application performs mathematical simulations based on user-entered parameters and does not constitute financial, tax, or legal advice. Actual taxation, stamp duties, fees, and tax methods may depend on the specific instrument, the relationship used, and current legislation. Always verify the data applicable to your specific case.",
+    btn_clear: "Clear saved data",
+    kpi_net_cap: "Net final capital", kpi_net_prof: "Net profit", kpi_net_ret: "Annualized net return", kpi_real_cap: "Real final capital", kpi_real_ret: "Annualized real return", kpi_costs: "Total costs & taxes",
+    comp_init_cap: "Initial capital", comp_gross_prof: "Gross profit", comp_tax: "Taxes", comp_stamp: "Stamp duty", comp_total_cost: "Total costs",
+    diff_ends_with: " ends with ", diff_more: " more ", diff_less: " less ", diff_compared: "compared to ", diff_eq: " (difference of ",
+    chart_net: "Net ", chart_real: "Real ", chart_year: "Year ", chart_ret_net: "Net return ", chart_ret_real: "Real return ",
+    err_years: "Duration between 1 and 100 years.", err_infl: "Invalid inflation.", err_cap: "Invalid capital."
+  }
+};
+let currentLang = 'it';
+const t = (key) => i18n[currentLang][key] || key;
+
+function updateLanguageUI() {
+  document.documentElement.lang = currentLang;
+  document.getElementById('langBtn').textContent = currentLang === 'it' ? 'EN' : 'IT';
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.innerHTML = t(el.getAttribute('data-i18n')); });
+  document.querySelectorAll('[data-i18n-title]').forEach(el => { el.title = t(el.getAttribute('data-i18n-title')); });
+  
+  const aName = document.getElementById('a-name');
+  if(aName.value === 'Investimento A' || aName.value === 'Investment A') { aName.value = t('inv_a'); state.a.name = t('inv_a'); }
+  const bName = document.getElementById('b-name');
+  if(bName.value === 'Investimento B' || bName.value === 'Investment B') { bName.value = t('inv_b'); state.b.name = t('inv_b'); }
+  
+  if(window._lastResults) recalc();
+}
+
+function toggleLang() {
+  currentLang = currentLang === 'it' ? 'en' : 'it';
+  try{ localStorage.setItem('investcompare-lang', currentLang); }catch(e){}
+  updateLanguageUI();
+}
+// --- end i18n ---
+
 const DEFAULTS = {
   years:10, inflation:2, compounding:'annual', contribFreq:'none', contribAmount:0,
   a:{name:'Investimento A',capital:10000,returnRate:5,taxMode:'26',customTax:26,stampRate:0.20,stampMode:'patrimonio',feeInitPct:0,feeInitFix:0,feeAnnualPct:0,feeAnnualFix:0,feeFinalPct:0,feeFinalFix:0,variableReturn:false,returnsByYear:[]},
@@ -235,13 +322,13 @@ let chartCapital = null;
 let chartReturn = null;
 let downloadsCap = null;
 
-function fmtC(v){ if(!isFinite(v)) v=0; return new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v); }
-function fmtP(v){ if(!isFinite(v)) v=0; return new Intl.NumberFormat('it-IT',{style:'percent',minimumFractionDigits:1,maximumFractionDigits:2}).format(v); }
+function fmtC(v){ if(!isFinite(v)) v=0; return new Intl.NumberFormat(currentLang==='it'?'it-IT':'en-US',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v); }
+function fmtP(v){ if(!isFinite(v)) v=0; return new Intl.NumberFormat(currentLang==='it'?'it-IT':'en-US',{style:'percent',minimumFractionDigits:1,maximumFractionDigits:2}).format(v); }
 
 function readInv(prefix){
   const g=id=>document.getElementById(id);
   return {
-    name: g(prefix+'-name').value || (prefix==='a'?'Investimento A':'Investimento B'),
+    name: g(prefix+'-name').value || (prefix==='a'?t('inv_a'):t('inv_b')),
     capital: parseFloat(g(prefix+'-capital').value)||0,
     returnRate: parseFloat(g(prefix+'-return').value)||0,
     taxMode: g(prefix+'-taxMode').value,
@@ -261,7 +348,6 @@ function readInv(prefix){
   };
 }
 
-// Genera dinamicamente un input di rendimento per ciascun anno quando il rendimento variabile è attivo.
 function generateVariableReturnInputs(prefix){
   const years=parseInt(document.getElementById('years').value)||1;
   const container=document.getElementById(prefix+'-varReturnList');
@@ -274,7 +360,7 @@ function generateVariableReturnInputs(prefix){
   let html='';
   for(let y=1;y<=years;y++){
     const v = existing[y-1]!==undefined ? existing[y-1] : base;
-    html+=`<div class="field" style="width:88px"><label for="${prefix}-yr-${y}">Anno ${y} (%)</label><input type="number" step="0.1" class="yr-input" id="${prefix}-yr-${y}" value="${v}"></div>`;
+    html+=`<div class="field" style="width:88px"><label for="${prefix}-yr-${y}">${t('chart_year')} ${y} (%)</label><input type="number" step="0.1" class="yr-input" id="${prefix}-yr-${y}" value="${v}"></div>`;
   }
   container.innerHTML=html;
 }
@@ -295,15 +381,13 @@ function validateState(s){
   let ok=true;
   const setErr=(id,msg)=>{ const e=document.getElementById('err-'+id); const inp=document.getElementById(id);
     if(e){e.textContent=msg; e.style.display=msg?'block':'none';} if(inp) inp.classList.toggle('invalid',!!msg); };
-  if(s.years<1||s.years>100||!isFinite(s.years)){setErr('years','Durata tra 1 e 100 anni.');ok=false;} else setErr('years','');
-  if(!isFinite(s.inflation)||s.inflation<-50||s.inflation>100){setErr('inflation','Inflazione non valida.');ok=false;} else setErr('inflation','');
-  if(s.a.capital<0||!isFinite(s.a.capital)){setErr('a-capital','Capitale non valido.');ok=false;} else setErr('a-capital','');
-  if(s.b.capital<0||!isFinite(s.b.capital)){setErr('b-capital','Capitale non valido.');ok=false;} else setErr('b-capital','');
+  if(s.years<1||s.years>100||!isFinite(s.years)){setErr('years',t('err_years'));ok=false;} else setErr('years','');
+  if(!isFinite(s.inflation)||s.inflation<-50||s.inflation>100){setErr('inflation',t('err_infl'));ok=false;} else setErr('inflation','');
+  if(s.a.capital<0||!isFinite(s.a.capital)){setErr('a-capital',t('err_cap'));ok=false;} else setErr('a-capital','');
+  if(s.b.capital<0||!isFinite(s.b.capital)){setErr('b-capital',t('err_cap'));ok=false;} else setErr('b-capital','');
   return ok;
 }
 
-// Motore di simulazione: itera periodo per periodo (non un'unica formula finale).
-// La tassazione è applicata solo al profitto del periodo (mai al capitale), evitando doppi conteggi.
 function calculateInvestment(inv, general){
   const ppy = general.compounding==='monthly' ? 12 : 1;
   const totalPeriods = Math.max(1, Math.round(general.years*ppy));
@@ -315,12 +399,12 @@ function calculateInvestment(inv, general){
   let totalTaxes=0,totalStamp=0,totalFees=initFee,totalGrossProfit=0,totalContrib=0;
   const yearlyData=[];
   for(let p=1;p<=totalPeriods;p++){
-    const yearIdx=Math.floor((p-1)/ppy); // anno (0-based) a cui appartiene questo periodo
+    const yearIdx=Math.floor((p-1)/ppy); 
     const annualRate = (inv.variableReturn && inv.returnsByYear && inv.returnsByYear[yearIdx]!==undefined) ? inv.returnsByYear[yearIdx] : inv.returnRate;
     const periodRate = Math.pow(1+annualRate/100, 1/ppy)-1;
     const startValue=value;
     const grossReturn=startValue*periodRate;
-    const taxes = grossReturn>0 ? grossReturn*taxRate : 0; // fiscalità sul solo profitto imponibile
+    const taxes = grossReturn>0 ? grossReturn*taxRate : 0;
     const avg = startValue+grossReturn/2;
     const stampBase = inv.stampMode==='average'?avg:(inv.stampMode==='patrimonio'?startValue:0);
     const stampDuty = inv.stampMode==='none'?0:stampBase*stampRatePeriod;
@@ -350,28 +434,28 @@ function renderKPIs(res, prefix, name){
   const el=document.getElementById('kpis-'+prefix);
   document.getElementById('kpi-'+prefix+'-title').textContent=name;
   const items=[
-    ['Capitale finale netto', fmtC(res.netFinalValue)],
-    ['Profitto netto', fmtC(res.netProfit)],
-    ['Rendimento netto annualizzato', fmtP(res.nominalAnnualizedReturn)],
-    ['Capitale finale reale', fmtC(res.realFinalValue)],
-    ['Rendimento reale annualizzato', fmtP(res.realAnnualizedReturn)],
-    ['Costi e imposte totali', fmtC(res.totalCosts+res.totalTaxes)]
+    [t('kpi_net_cap'), fmtC(res.netFinalValue)],
+    [t('kpi_net_prof'), fmtC(res.netProfit)],
+    [t('kpi_net_ret'), fmtP(res.nominalAnnualizedReturn)],
+    [t('kpi_real_cap'), fmtC(res.realFinalValue)],
+    [t('kpi_real_ret'), fmtP(res.realAnnualizedReturn)],
+    [t('kpi_costs'), fmtC(res.totalCosts+res.totalTaxes)]
   ];
   el.innerHTML=items.map(([l,v])=>`<div class="kpi ${prefix}"><div class="l">${l}</div><div class="v">${v}</div></div>`).join('');
 }
 
 function renderComparison(a,b,sa,sb){
   const rows=[
-    ['Capitale iniziale', fmtC(a.initialCapital), fmtC(b.initialCapital)],
-    ['Profitto lordo', fmtC(a.totalGrossProfit), fmtC(b.totalGrossProfit)],
-    ['Tasse', fmtC(a.totalTaxes), fmtC(b.totalTaxes)],
-    ['Bollo', fmtC(a.totalStampDuty), fmtC(b.totalStampDuty)],
-    ['Costi totali', fmtC(a.totalCosts), fmtC(b.totalCosts)],
-    ['Profitto netto', fmtC(a.netProfit), fmtC(b.netProfit)],
-    ['Capitale finale netto', fmtC(a.netFinalValue), fmtC(b.netFinalValue)],
-    ['Capitale finale reale', fmtC(a.realFinalValue), fmtC(b.realFinalValue)],
-    ['Rendimento netto annualizzato', fmtP(a.nominalAnnualizedReturn), fmtP(b.nominalAnnualizedReturn)],
-    ['Rendimento reale annualizzato', fmtP(a.realAnnualizedReturn), fmtP(b.realAnnualizedReturn)]
+    [t('comp_init_cap'), fmtC(a.initialCapital), fmtC(b.initialCapital)],
+    [t('comp_gross_prof'), fmtC(a.totalGrossProfit), fmtC(b.totalGrossProfit)],
+    [t('comp_tax'), fmtC(a.totalTaxes), fmtC(b.totalTaxes)],
+    [t('comp_stamp'), fmtC(a.totalStampDuty), fmtC(b.totalStampDuty)],
+    [t('comp_total_cost'), fmtC(a.totalCosts), fmtC(b.totalCosts)],
+    [t('kpi_net_prof'), fmtC(a.netProfit), fmtC(b.netProfit)],
+    [t('kpi_net_cap'), fmtC(a.netFinalValue), fmtC(b.netFinalValue)],
+    [t('kpi_real_cap'), fmtC(a.realFinalValue), fmtC(b.realFinalValue)],
+    [t('kpi_net_ret'), fmtP(a.nominalAnnualizedReturn), fmtP(b.nominalAnnualizedReturn)],
+    [t('kpi_real_ret'), fmtP(a.realAnnualizedReturn), fmtP(b.realAnnualizedReturn)]
   ];
   const raw=[a.initialCapital,a.totalGrossProfit,a.totalTaxes,a.totalStampDuty,a.totalCosts,a.netProfit,a.netFinalValue,a.realFinalValue,a.nominalAnnualizedReturn,a.realAnnualizedReturn];
   const rawB=[b.initialCapital,b.totalGrossProfit,b.totalTaxes,b.totalStampDuty,b.totalCosts,b.netProfit,b.netFinalValue,b.realFinalValue,b.nominalAnnualizedReturn,b.realAnnualizedReturn];
@@ -379,12 +463,12 @@ function renderComparison(a,b,sa,sb){
   tbody.innerHTML=rows.map((r,i)=>{
     const diff=raw[i]-rawB[i];
     const pct=rawB[i]!==0?diff/Math.abs(rawB[i]):0;
-    const isPct=r[0].includes('annualizzato');
+    const isPct=r[0].includes(t('kpi_net_ret').split(' ')[0]);
     return `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${isPct?fmtP(diff):fmtC(diff)}</td><td>${fmtP(pct)}</td></tr>`;
   }).join('');
 
   const diffV=a.netFinalValue-b.netFinalValue;
-  document.getElementById('diffText').textContent = sa.name+' termina con '+fmtC(Math.abs(diffV))+(diffV>=0?' in più ':' in meno ')+'rispetto a '+sb.name+' (differenza pari al '+fmtP(b.netFinalValue?Math.abs(diffV)/b.netFinalValue:0)+' rispetto a '+sb.name+').';
+  document.getElementById('diffText').textContent = sa.name + t('diff_ends_with') + fmtC(Math.abs(diffV)) + (diffV>=0 ? t('diff_more') : t('diff_less')) + t('diff_compared') + sb.name + t('diff_eq') + fmtP(b.netFinalValue?Math.abs(diffV)/b.netFinalValue:0) + t('diff_compared') + sb.name + ').';
   const total=(a.netFinalValue+b.netFinalValue)||1;
   document.getElementById('diffbar-a').style.width=(100*a.netFinalValue/total)+'%';
   document.getElementById('diffbar-b').style.width=(100*b.netFinalValue/total)+'%';
@@ -401,12 +485,12 @@ function renderYearly(a,b){
 function updateChart(a,b,sa,sb){
   const canvas=document.getElementById('chartCapital');
   if(typeof Chart==='undefined'){ canvas.style.display='none'; document.getElementById('chartFallback').style.display='block'; return; }
-  const labels=a.yearlyData.map(y=>'Anno '+y.year);
+  const labels=a.yearlyData.map(y=> t('chart_year') + y.year);
   const datasets=[
-    {label:'Netto '+sa.name, data:a.yearlyData.map(y=>y.endValue), borderColor:getCss('--a'), backgroundColor:'transparent', tension:.25},
-    {label:'Netto '+sb.name, data:b.yearlyData.map(y=>y.endValue), borderColor:getCss('--b'), backgroundColor:'transparent', tension:.25},
-    {label:'Reale '+sa.name, data:a.yearlyData.map(y=>y.inflationAdjustedValue), borderColor:getCss('--a'), borderDash:[5,4], backgroundColor:'transparent', tension:.25},
-    {label:'Reale '+sb.name, data:b.yearlyData.map(y=>y.inflationAdjustedValue), borderColor:getCss('--b'), borderDash:[5,4], backgroundColor:'transparent', tension:.25}
+    {label: t('chart_net') + sa.name, data:a.yearlyData.map(y=>y.endValue), borderColor:getCss('--a'), backgroundColor:'transparent', tension:.25},
+    {label: t('chart_net') + sb.name, data:b.yearlyData.map(y=>y.endValue), borderColor:getCss('--b'), backgroundColor:'transparent', tension:.25},
+    {label: t('chart_real') + sa.name, data:a.yearlyData.map(y=>y.inflationAdjustedValue), borderColor:getCss('--a'), borderDash:[5,4], backgroundColor:'transparent', tension:.25},
+    {label: t('chart_real') + sb.name, data:b.yearlyData.map(y=>y.inflationAdjustedValue), borderColor:getCss('--b'), borderDash:[5,4], backgroundColor:'transparent', tension:.25}
   ];
   if(chartCapital){ chartCapital.data.labels=labels; chartCapital.data.datasets=datasets; chartCapital.update(); return; }
   chartCapital=new Chart(canvas.getContext('2d'),{type:'line',data:{labels,datasets},options:{responsive:true,plugins:{legend:{position:'bottom'}},scales:{y:{ticks:{callback:v=>fmtC(v)}}}}});
@@ -416,13 +500,13 @@ function getCss(v){ return getComputedStyle(document.documentElement).getPropert
 function updateReturnChart(a,b,sa,sb){
   const canvas=document.getElementById('chartReturn');
   if(typeof Chart==='undefined') return;
-  const labels=a.yearlyData.map(y=>'Anno '+y.year);
+  const labels=a.yearlyData.map(y=> t('chart_year') + y.year);
   const pct=(v,base)=> base ? ((v/base)-1)*100 : 0;
   const datasets=[
-    {label:'Rendimento netto '+sa.name, data:a.yearlyData.map(y=>pct(y.endValue,a.initialCapital)), borderColor:getCss('--a'), backgroundColor:'transparent', tension:.25},
-    {label:'Rendimento netto '+sb.name, data:b.yearlyData.map(y=>pct(y.endValue,b.initialCapital)), borderColor:getCss('--b'), backgroundColor:'transparent', tension:.25},
-    {label:'Rendimento reale '+sa.name, data:a.yearlyData.map(y=>pct(y.inflationAdjustedValue,a.initialCapital)), borderColor:getCss('--a'), borderDash:[5,4], backgroundColor:'transparent', tension:.25},
-    {label:'Rendimento reale '+sb.name, data:b.yearlyData.map(y=>pct(y.inflationAdjustedValue,b.initialCapital)), borderColor:getCss('--b'), borderDash:[5,4], backgroundColor:'transparent', tension:.25}
+    {label: t('chart_ret_net') + sa.name, data:a.yearlyData.map(y=>pct(y.endValue,a.initialCapital)), borderColor:getCss('--a'), backgroundColor:'transparent', tension:.25},
+    {label: t('chart_ret_net') + sb.name, data:b.yearlyData.map(y=>pct(y.endValue,b.initialCapital)), borderColor:getCss('--b'), backgroundColor:'transparent', tension:.25},
+    {label: t('chart_ret_real') + sa.name, data:a.yearlyData.map(y=>pct(y.inflationAdjustedValue,a.initialCapital)), borderColor:getCss('--a'), borderDash:[5,4], backgroundColor:'transparent', tension:.25},
+    {label: t('chart_ret_real') + sb.name, data:b.yearlyData.map(y=>pct(y.inflationAdjustedValue,b.initialCapital)), borderColor:getCss('--b'), borderDash:[5,4], backgroundColor:'transparent', tension:.25}
   ];
   if(chartReturn){ chartReturn.data.labels=labels; chartReturn.data.datasets=datasets; chartReturn.update(); return; }
   chartReturn=new Chart(canvas.getContext('2d'),{type:'line',data:{labels,datasets},options:{responsive:true,plugins:{legend:{position:'bottom'}},scales:{y:{ticks:{callback:v=>v.toFixed(0)+'%'}}}}});
@@ -481,18 +565,18 @@ function onInputChange(){
 
 function exportCSV(){
   const r=window._lastResults; if(!r) return;
-  let csv='Anno,Valore A,Valore B,Reale A,Reale B\n';
+  let csv= t('th_year') + ',' + t('th_valA') + ',' + t('th_valB') + ',' + t('th_realA') + ',' + t('th_realB') + '\n';
   r.resA.yearlyData.forEach((ya,i)=>{
     const yb=r.resB.yearlyData[i]||{endValue:0,inflationAdjustedValue:0};
     csv+=`${ya.year},${ya.endValue.toFixed(2)},${yb.endValue.toFixed(2)},${ya.inflationAdjustedValue.toFixed(2)},${yb.inflationAdjustedValue.toFixed(2)}\n`;
   });
   if(downloadsCap){
-    downloadsCap.save({filename:'investcompare-simulazione.csv', data:csv}).catch(()=>{});
+    downloadsCap.save({filename:'investcompare-simulation.csv', data:csv}).catch(()=>{});
   } else {
     try{
       const blob=new Blob([csv],{type:'text/csv'});
       const url=URL.createObjectURL(blob);
-      const a=document.createElement('a'); a.href=url; a.download='investcompare-simulazione.csv'; a.click();
+      const a=document.createElement('a'); a.href=url; a.download='investcompare-simulation.csv'; a.click();
       URL.revokeObjectURL(url);
     }catch(e){}
   }
@@ -509,6 +593,7 @@ function toggleTheme(){
 function bindEvents(){
   document.querySelectorAll('input, select').forEach(el=>el.addEventListener('input', onInputChange));
   document.getElementById('recalcBtn').addEventListener('click', recalc);
+  document.getElementById('langBtn').addEventListener('click', toggleLang);
   document.getElementById('resetBtn').addEventListener('click', ()=>{ applyStateToDom(JSON.parse(JSON.stringify(DEFAULTS))); recalc(); });
   document.getElementById('themeBtn').addEventListener('click', toggleTheme);
   document.getElementById('csvBtn').addEventListener('click', exportCSV);
@@ -531,9 +616,13 @@ function init(){
   try{
     const savedTheme=localStorage.getItem('investcompare-theme');
     if(savedTheme){ document.documentElement.setAttribute('data-theme',savedTheme); document.getElementById('themeBtn').textContent= savedTheme==='dark'?'☀':'🌙'; }
+    const savedLang = localStorage.getItem('investcompare-lang');
+    if(savedLang && (savedLang === 'it' || savedLang === 'en')) currentLang = savedLang;
   }catch(e){}
   const saved=loadState();
   if(saved){ state=saved; }
+  
+  updateLanguageUI();
   applyStateToDom(state);
   bindEvents();
   recalc();
